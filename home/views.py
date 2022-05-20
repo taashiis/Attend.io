@@ -1,7 +1,7 @@
 import PIL.Image as Image
 import io
 import base64
-import urllib
+import urllib.request
 import cv2
 import numpy as np
 import face_recognition
