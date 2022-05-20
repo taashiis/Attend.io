@@ -1,4 +1,4 @@
-opencv-python-headless==4.2.0.32
+opencv-python-headless
 asgiref==3.5.1
 certifi==2021.10.8
 charset-normalizer==2.0.10
