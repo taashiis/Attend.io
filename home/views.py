@@ -52,7 +52,9 @@ def login(request):
     if request.method == "POST":
         id = request.POST.get('empid')
         name=identifyuser(VideoCamera())
-        if(id==name):
+        passw=request.POST.get('emppass')
+        data=Login.objects.get(empid=id)
+        if(id==name)and(passw==data.emppass):
             username=Login.objects.get(empid=id)
             return render(request, 'homepage.html',{"username":username})
         else:

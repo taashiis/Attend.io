@@ -48,12 +48,12 @@ class VideoCamera(object):
 
     def get_frame(self):
         # cap=cv2.VideoCapture(0)
-
         name=''
         matched=False
         success, img = self.video.read()
         imgs=cv2.resize(img,(0,0),None, 0.25,0.25)
         imgs=cv2.cvtColor(imgs,cv2.COLOR_BGR2RGB)
+        # print(imgs)
         facecurr= face_recognition.face_locations(imgs)
         encode=face_recognition.face_encodings(imgs,facecurr)
 

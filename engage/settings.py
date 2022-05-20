@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-u2oj_j-y5akeh4a7^i96fc$#)o2)#^k(9+bdhh2cqit79@t0l1
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
     'prolificity.herokuapp.com'
 ]
 
@@ -124,9 +125,9 @@ STATIC_URL = 'static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static"
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
 # if DEBUG:
 #     STATICFILES_DIRS = [
 #         os.path.join(BASE_DIR, 'static')
@@ -134,13 +135,13 @@ MEDIA_URL = '/media/'
 # else:
 #     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATIC_ROOT = BASE_DIR /'static'
+# STATIC_ROOT = BASE_DIR /'static'
 
-if not DEBUG:
-    STATIC_ROOT=''
-    STATICFILES_DIRS = [
-    BASE_DIR / "static"
-    ]
+# if not DEBUG:
+#     STATIC_ROOT=''
+#     STATICFILES_DIRS = [
+#     BASE_DIR / "static"
+#     ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
