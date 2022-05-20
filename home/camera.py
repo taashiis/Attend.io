@@ -3,20 +3,28 @@ import numpy as np
 import face_recognition
 from django.conf import settings
 import os
+from home.models import Login
 
 class VideoCamera(object):
     path='media'
     images=[]
     names=[]
     list=os.listdir(path)
-    print(list)
+    # print(list)
     name=''
+    # data=Login.objects.all()
+
+    # for cls in data:
+    #     curr=cv2.imread(cls.userimg.url)
+    #     images.append(curr)
+    #     names.append(cls.empname)
+
     for cls in list:
         curr=cv2.imread(f'{path}/{cls}')
         images.append(curr)
         names.append(os.path.splitext(cls)[0])
 
-    print(names)
+    # print(names)
 
     def __init__(self):
         self.video=cv2.VideoCapture(0)
@@ -40,6 +48,7 @@ class VideoCamera(object):
 
     def get_frame(self):
         # cap=cv2.VideoCapture(0)
+
         name=''
         matched=False
         success, img = self.video.read()
@@ -56,12 +65,13 @@ class VideoCamera(object):
             if matches[matchindex]:
                 matched=True
                 name = self.names[matchindex].lower()
-                print(self.name)
+                username=Login.objects.get(empid=name)
+                # print(self.name)
                 y1,x2,y2,x1= faceloc
                 y1,x2,y2,x1= y1*4,x2*4,y2*4,x1*4
                 cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
                 cv2.rectangle(img,(x1,y2-35),(x2,y2),(0,255,0),cv2.FILLED)
-                cv2.putText(img,name,(x1+6,y2-6),cv2.FONT_HERSHEY_COMPLEX_SMALL,1,(255,255,255),2)
+                cv2.putText(img,str(username),(x1+6,y2-6),cv2.FONT_HERSHEY_COMPLEX_SMALL,1,(255,255,255),2)
             # cv2.imshow('webcam',img)
             # cv2.waitKey(1)
         # self,image=self.video.read()

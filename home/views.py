@@ -15,10 +15,11 @@ from home.camera import VideoCamera
 
 # Create your views here.
 def index(request):
-    context={
-        'company':"attendees"
-    }
-    return render(request, 'index.html',context)
+    # context={
+    #     'company':"attendees"
+    # }
+    return render(request, 'index.html')
+    # return render(request, 'index.html',context)
 
 def register(request):
     if request.method == "POST":
@@ -45,7 +46,7 @@ def register(request):
         # return HttpResponse(base64str)
         logindet = Login(empid=id, empname=name, empemail=email,emppass=passw,userimg=filename+'.jpg')
         logindet.save()
-    return render(request, 'register.html')
+    return render(request,'register.html')
 
 def login(request):
     if request.method == "POST":
