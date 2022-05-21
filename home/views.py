@@ -13,7 +13,8 @@ from home.camera import VideoCamera
 import datetime
 
 username=""
-
+global tloggedin
+tloggedin=False
 # Create your views here.
 def index(request):
     # context={
@@ -58,6 +59,8 @@ def login(request):
         if(id==name)and(passw==data.emppass):
             global username 
             username = Login.objects.get(empid=id)
+            global tloggedin 
+            tloggedin = True
             return user(request,username)
         else:
             return render(request, 'index.html')
@@ -69,20 +72,24 @@ def gen(camera):
         yield (b'--frame\r\n'b'Content-Type: image/jpg\r\n\r\n'+frame+b'\r\n\r\n')
 
 def identifyuser(camera):
+    name=''
     frame,matched,name=camera.get_frame()
     if(matched):
+        return name
+    else:
         return name
 
 def video_feed(request):
     return StreamingHttpResponse(gen(VideoCamera()),content_type='multipart/x-mixed-replace; boundary=frame')
 
 def user(request,user=""):
+    global tloggedin
+    if not tloggedin:
+        return render(request,'index.html')
     global username
     user=username
-    if request.method == "POST":
-        user=username
-        start= request.POST.get('start')
-        end=request.POST.get('end')
-        sesh=Session(empid=user,start=start,end=end)
-        sesh.save()
+    obje = VideoCamera()
+    obje.loggedin()
+    if(request.method=='POST'):
+        VideoCamera.saveattendance()
     return render(request, 'homepage.html', {"username":user})

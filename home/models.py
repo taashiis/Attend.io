@@ -12,6 +12,6 @@ class Login(models.Model):
         return self.empname
 
 class Session(models.Model):
+    date = models.DateField(null=True)
     empid = models.CharField(null=True,max_length=10)
-    start = models.TimeField(null=True,auto_now=False)
-    end = models.TimeField(null=True,auto_now=False)
+    entrytime = models.TimeField(null=True,auto_now=False)

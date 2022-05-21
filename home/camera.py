@@ -3,7 +3,10 @@ import numpy as np
 import face_recognition
 from django.conf import settings
 import os
-from home.models import Login
+from home.models import Login, Session
+from datetime import datetime
+
+
 
 class VideoCamera(object):
     path='media'
@@ -12,6 +15,8 @@ class VideoCamera(object):
     list=os.listdir(path)
     # print(list)
     name=''
+    teacherlogged=False
+    attendees=[]
     # data=Login.objects.all()
 
     # for cls in data:
@@ -46,6 +51,29 @@ class VideoCamera(object):
     print("encoding done")
     matched=False
 
+    def loggedin(self):
+        VideoCamera.teacherlogged=True
+
+    def saveattendance():
+        # with open('attendance.csv', 'r') as f:
+        #     list=f.readlines()
+        #     names=[]
+        # for line in list:
+        #     entry= line.split(',')
+        #     names.append(entry[0])
+        # if name not in names:
+        #     now=datetime.now()
+        #     dtstring= now.strftime('%H:%M:%S')
+        #     f.writelines(f'\n{name},{dtstring}')
+        # existstudent = Session.objects.filter(empid=name).exists()
+        # if not existstudent:
+        #     attendee= Session(date=datetime.today(),empid=name,entry=datetime.datetime.now())
+        #     attendee.save()
+        # return False
+        for cls in VideoCamera.attendees:
+            attendee= Session(date=datetime.today(),empid=cls,entrytime=datetime.now())
+            attendee.save()
+
     def get_frame(self):
         # cap=cv2.VideoCapture(0)
         name=''
@@ -72,9 +100,15 @@ class VideoCamera(object):
                 cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
                 cv2.rectangle(img,(x1,y2-35),(x2,y2),(0,255,0),cv2.FILLED)
                 cv2.putText(img,str(username),(x1+6,y2-6),cv2.FONT_HERSHEY_COMPLEX_SMALL,1,(255,255,255),2)
+                if(VideoCamera.teacherlogged):
+                    if name not in self.attendees:
+                        self.attendees.append(name)
+                #     self.saveattendance(name)
             # cv2.imshow('webcam',img)
             # cv2.waitKey(1)
         # self,image=self.video.read()
         # frame_flip=cv2.flip(img,1)
         ret,jpeg=cv2.imencode('.jpg',img)
         return jpeg.tobytes(),matched,name
+
+    
