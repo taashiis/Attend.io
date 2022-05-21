@@ -12,6 +12,6 @@ class Login(models.Model):
         return self.empname
 
 class Session(models.Model):
-    empid = models.CharField(max_length=10)
-    start = models.TimeField(auto_now=False)
-    end = models.TimeField(auto_now=False)
+    empid = models.CharField(null=True,max_length=10)
+    start = models.TimeField(null=True,auto_now=False)
+    end = models.TimeField(null=True,auto_now=False)

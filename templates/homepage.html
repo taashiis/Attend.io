@@ -16,11 +16,30 @@
   <body>
     <p>user logged in</p>
     {{username}}
-    <form action="" method="post">
-      <button name="start" value="start">Start</button>
+    <form action="{%url 'user'%}" method="post" id="myform">
+      {% csrf_token %}
+      <input type="text" id="start" name="start" value="" />
+      <button onclick="Starttime()" type="button">Start</button>
+      <input type="text" id="end" name="end" value="" />
+      <button onclick="DoSubmit()" type="button" name="end">End</button>
     </form>
-    <form action="" method="post">
-      <button name="end" value="end">End</button>
-    </form>
+    <p id="demo"></p>
   </body>
+  <script type="text/javascript">
+    //myform.onsubmit =
+    function DoSubmit() {
+      var myform = document.getElementById("myform");
+      var end = document.getElementById("end");
+      var d = new Date();
+      var n = d.toLocaleTimeString();
+      end.value = n;
+      myform.submit();
+    }
+    function Starttime() {
+      var start = document.getElementById("start");
+      var d = new Date();
+      var n = d.toLocaleTimeString();
+      start.value = n;
+    }
+  </script>
 </html>

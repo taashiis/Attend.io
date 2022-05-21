@@ -7,11 +7,12 @@ import numpy as np
 import face_recognition
 import os
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
-from home.models import Login
+from home.models import Login, Session
 from django.http.response import StreamingHttpResponse
 from home.camera import VideoCamera
+import datetime
 
-
+username=""
 
 # Create your views here.
 def index(request):
@@ -55,8 +56,9 @@ def login(request):
         passw=request.POST.get('emppass')
         data=Login.objects.get(empid=id)
         if(id==name)and(passw==data.emppass):
-            username=Login.objects.get(empid=id)
-            return render(request, 'homepage.html',{"username":username})
+            global username 
+            username = Login.objects.get(empid=id)
+            return user(request,username)
         else:
             return render(request, 'index.html')
     return render(request, 'login.html')
@@ -74,3 +76,13 @@ def identifyuser(camera):
 def video_feed(request):
     return StreamingHttpResponse(gen(VideoCamera()),content_type='multipart/x-mixed-replace; boundary=frame')
 
+def user(request,user=""):
+    global username
+    user=username
+    if request.method == "POST":
+        user=username
+        start= request.POST.get('start')
+        end=request.POST.get('end')
+        sesh=Session(empid=user,start=start,end=end)
+        sesh.save()
+    return render(request, 'homepage.html', {"username":user})
