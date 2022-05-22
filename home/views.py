@@ -10,7 +10,9 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from home.models import Login, Session
 from django.http.response import StreamingHttpResponse
 from home.camera import VideoCamera
-import datetime
+from datetime import datetime
+from django.template.defaulttags import register
+
 
 username=""
 global tloggedin
@@ -58,10 +60,10 @@ def login(request):
         data=Login.objects.get(empid=id)
         if(id==name)and(passw==data.emppass):
             global username 
-            username = Login.objects.get(empid=id)
+            username = Login.objects.get(empid=id).empid
             global tloggedin 
             tloggedin = True
-            return user(request,username)
+            return HttpResponseRedirect('/user')
         else:
             return render(request, 'index.html')
     return render(request, 'login.html')
@@ -91,5 +93,32 @@ def user(request,user=""):
     obje = VideoCamera()
     obje.loggedin()
     if(request.method=='POST'):
-        VideoCamera.saveattendance()
-    return render(request, 'homepage.html', {"username":user})
+        VideoCamera.saveattendance(user)
+    return render(request, 'homepage.html', {"username":Login.objects.get(empid=user).empname})
+
+def session(request,user=""):
+    global tloggedin
+    if not tloggedin:
+        return render(request,'index.html')
+    global username
+    user=username
+    session=Session.objects.all()
+    allsesh=[]
+    emptylist=[]
+    # students=Login.objects.all()
+    for cls in session:
+        if(cls.date.strftime("%b %d, %Y") not in allsesh) and cls.host==user:
+            allsesh.append(cls.date.strftime("%b %d, %Y"))
+    print(allsesh)
+    if request.method=='POST':
+        sdate=request.POST.get('inputdate')
+        presentstu=[]
+        studentnames={}
+        for cls in session:
+            if cls.date.strftime("%b %d, %Y") == sdate and cls.host==user:
+                print("")
+                presentstu.append(cls)
+                studentnames[cls.empid]=Login.objects.get(empid=cls.empid).empname
+        print(studentnames)
+        return render(request,'session.html', {"username":user,"dates":allsesh,"present":presentstu,"users":studentnames})
+    return render(request,'session.html', {"username":user,"dates":allsesh,"present":emptylist,"users":emptylist})

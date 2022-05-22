@@ -1,1 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load template_filters %} {%block body%}
+
+<form action="/session" method="POST" id="getlist">
+  {% csrf_token %}
+  <input type="text" id="inputdate" name="inputdate" value="" />
+  {% for s in dates %}
+  <button type="button" class="menu" id="{{s}}" onclick="getdate(this.id)">
+    {{s}}
+  </button>
+  {%endfor %}
+</form>
+<div id="alist">
+  {{present}} {% for stu in present %}
+  <p>{{stu.empid}} {{stu.entrytime}}</p>
+  {% if stu.empid in users %}
+  <p>{{ users|get_item:stu.empid }}</p>
+  {% endif %} {% endfor %}
+</div>
+{% endblock body %} {% block script %}
+<script type="text/javascript">
+  function getdate(date) {
+    var seshdate = document.getElementById("inputdate");
+    seshdate.value = date;
+    var sform = document.getElementById("getlist");
+    sform.submit();
+  }
+</script>
+{% endblock script %}

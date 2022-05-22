@@ -50,11 +50,12 @@ class VideoCamera(object):
     encodelistknown=findencoding(images)
     print("encoding done")
     matched=False
+    count=0
 
     def loggedin(self):
         VideoCamera.teacherlogged=True
 
-    def saveattendance():
+    def saveattendance(user):
         # with open('attendance.csv', 'r') as f:
         #     list=f.readlines()
         #     names=[]
@@ -70,9 +71,11 @@ class VideoCamera(object):
         #     attendee= Session(date=datetime.today(),empid=name,entry=datetime.datetime.now())
         #     attendee.save()
         # return False
+        VideoCamera.count+=1
         for cls in VideoCamera.attendees:
-            attendee= Session(date=datetime.today(),empid=cls,entrytime=datetime.now())
+            attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid=cls,entrytime=datetime.now())
             attendee.save()
+        VideoCamera.attendees.clear()
 
     def get_frame(self):
         # cap=cv2.VideoCapture(0)
