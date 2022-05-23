@@ -17,6 +17,8 @@ from django.template.defaulttags import register
 username=""
 global tloggedin
 tloggedin=False
+global end
+end=False
 # Create your views here.
 def index(request):
     # context={
@@ -57,8 +59,10 @@ def login(request):
         id = request.POST.get('empid')
         name=identifyuser(VideoCamera())
         passw=request.POST.get('emppass')
+        email=request.POST.get('email')
+        usern=request.POST.get('name')
         data=Login.objects.get(empid=id)
-        if(id==name)and(passw==data.emppass):
+        if(id==name)and(passw==data.emppass)and(email==data.empemail):
             global username 
             username = Login.objects.get(empid=id).empid
             global tloggedin 
@@ -82,7 +86,8 @@ def identifyuser(camera):
         return name
 
 def video_feed(request):
-    return StreamingHttpResponse(gen(VideoCamera()),content_type='multipart/x-mixed-replace; boundary=frame')
+    obj = VideoCamera()
+    return StreamingHttpResponse(gen(obj),content_type='multipart/x-mixed-replace; boundary=frame')
 
 def user(request,user=""):
     global tloggedin
@@ -90,10 +95,7 @@ def user(request,user=""):
         return render(request,'index.html')
     global username
     user=username
-    obje = VideoCamera()
-    obje.loggedin()
-    if(request.method=='POST'):
-        VideoCamera.saveattendance(user)
+    VideoCamera.teacherlogged=True
     return render(request, 'homepage.html', {"username":Login.objects.get(empid=user).empname})
 
 def session(request,user=""):
@@ -109,7 +111,6 @@ def session(request,user=""):
     for cls in session:
         if(cls.date.strftime("%b %d, %Y") not in allsesh) and cls.host==user:
             allsesh.append(cls.date.strftime("%b %d, %Y"))
-    print(allsesh)
     if request.method=='POST':
         sdate=request.POST.get('inputdate')
         presentstu=[]
@@ -119,6 +120,23 @@ def session(request,user=""):
                 print("")
                 presentstu.append(cls)
                 studentnames[cls.empid]=Login.objects.get(empid=cls.empid).empname
-        print(studentnames)
-        return render(request,'session.html', {"username":user,"dates":allsesh,"present":presentstu,"users":studentnames})
-    return render(request,'session.html', {"username":user,"dates":allsesh,"present":emptylist,"users":emptylist})
+        return render(request,'session.html', {"username":Login.objects.get(empid=user).empname,"dates":allsesh,"present":presentstu,"users":studentnames})
+    return render(request,'session.html', {"username":Login.objects.get(empid=user).empname,"dates":allsesh,"present":emptylist,"users":emptylist})
+
+def logout(request):
+    global tloggedin
+    tloggedin=False
+    global username
+    username=""
+    VideoCamera.teacherlogged=False
+    return render(request, "index.html")
+
+def sessionend(request):
+    global end
+    end=False
+    global username
+    user=username
+    if(request.method=='POST'):
+        end=True
+        VideoCamera.saveattendance(user)
+    return render(request,"sessionsaved.html")

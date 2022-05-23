@@ -1,29 +1,21 @@
-{% extends 'base.html' %} {% comment %} <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>{% block title %}{% endblock title %}HTML 5 Boilerplate</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  {% endcomment %} {%block body%}
+
+{% extends 'base.html' %}  {% load static %}{%block body%}
   <body>
-    <p>user logged in</p>
-    {{username}}
-    <p id="start"></p>
-    <button type="button" id="startbtn">Start</button>
-    <button type="button" id="end">End</button>
-    <form action="/user" method="POST">
+    <div class="jumbo" >
+      <div class="banner" id="host">Welcome Back, {{username}} !</div>
+    </div>
+    <div id="start" class="jumbo"><img src={% static "images/sessionpic.jpg"%} height="400" /><br>
+      <div class="banner btndiv">Start a Session ?</div>
+    </div>
+    <div class="jumbo">
+    <form action="/sessionend" method="POST">
       {% csrf_token %}
-      <button type="submit">Save</button>
+      <div id="buttonsesh">
+      <button type="button" id="startbtn" class="btn btn-outline-primary">Start</button>
+      </div>
     </form>
+    </div>
+    
   </body>
   {%endblock body%} {%block script%}
   <script type="text/javascript">
@@ -34,13 +26,17 @@
     document.getElementById("end").addEventListener("click", endtime, false);
     function endtime() {
       var end = document.getElementById("start");
-      start.innerHTML = "";
+      start.innerHTML = '<lottie-player src="https://assets3.lottiefiles.com/packages/lf20_1oky66dx.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player>';
     }
     function Starttime() {
       var start = document.getElementById("start");
-      start.innerHTML = "<img src='' id='imagefeed'/>";
+      start.innerHTML = "<img src='' id='imagefeed' height='450' width='750' id='loginvid'/>";
       var sesh = document.getElementById("imagefeed");
       sesh.src = "{% url 'video_feed' %}";
+      var host=document.getElementById("host")
+      host.innerHTML = "Host name : {{username}}"
+      const  div = document.getElementById('buttonsesh');
+      div.innerHTML='<button type="submit" id="end" class="btn btn-outline-danger">End</button>';
     }
   </script>
   {%endblock script%} {% comment %}

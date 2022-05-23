@@ -13,86 +13,48 @@ class VideoCamera(object):
     images=[]
     names=[]
     list=os.listdir(path)
-    # print(list)
     name=''
     teacherlogged=False
     attendees=[]
-    # data=Login.objects.all()
-
-    # for cls in data:
-    #     curr=cv2.imread(cls.userimg.url)
-    #     images.append(curr)
-    #     names.append(cls.empname)
-
-    for cls in list:
-        curr=cv2.imread(f'{path}/{cls}')
-        images.append(curr)
-        names.append(os.path.splitext(cls)[0])
-
-    # print(names)
-
+    encodelistknown=[]
     def __init__(self):
         self.video=cv2.VideoCapture(0)
+        for cls in VideoCamera.list:
+            curr=cv2.imread(f'{VideoCamera.path}/{cls}')
+            if os.path.splitext(cls)[0] not in VideoCamera.names:
+                VideoCamera.images.append(curr)
+                VideoCamera.names.append(os.path.splitext(cls)[0])
+                VideoCamera.encodelistknown.append(VideoCamera.findencoding(curr))
+
     def __del__(self):
         self.video.release()
-
-    # def returnname(self):
-    #     return self.name
-
-    def findencoding(images):
-        encodelist=[]
-        for img in images:
-            img=cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-            encode=face_recognition.face_encodings(img)[0]
-            encodelist.append(encode)
-        return encodelist
-
-    encodelistknown=findencoding(images)
+    def findencoding(img):
+        img=cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+        encode=face_recognition.face_encodings(img)[0]
+        return encode
     print("encoding done")
     matched=False
     count=0
-
-    def loggedin(self):
-        VideoCamera.teacherlogged=True
-
     def saveattendance(user):
-        # with open('attendance.csv', 'r') as f:
-        #     list=f.readlines()
-        #     names=[]
-        # for line in list:
-        #     entry= line.split(',')
-        #     names.append(entry[0])
-        # if name not in names:
-        #     now=datetime.now()
-        #     dtstring= now.strftime('%H:%M:%S')
-        #     f.writelines(f'\n{name},{dtstring}')
-        # existstudent = Session.objects.filter(empid=name).exists()
-        # if not existstudent:
-        #     attendee= Session(date=datetime.today(),empid=name,entry=datetime.datetime.now())
-        #     attendee.save()
-        # return False
         VideoCamera.count+=1
         for cls in VideoCamera.attendees:
-            attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid=cls,entrytime=datetime.now())
-            attendee.save()
+            if cls!=user:
+                attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid=cls,entrytime=datetime.now())
+                attendee.save()
         VideoCamera.attendees.clear()
-
     def get_frame(self):
-        # cap=cv2.VideoCapture(0)
         name=''
         matched=False
         success, img = self.video.read()
         imgs=cv2.resize(img,(0,0),None, 0.25,0.25)
         imgs=cv2.cvtColor(imgs,cv2.COLOR_BGR2RGB)
-        # print(imgs)
         facecurr= face_recognition.face_locations(imgs)
         encode=face_recognition.face_encodings(imgs,facecurr)
 
         for encodeface,faceloc in zip(encode,facecurr):
-            matches=face_recognition.compare_faces(self.encodelistknown,encodeface)
-            facedis=face_recognition.face_distance(self.encodelistknown,encodeface)
+            matches=face_recognition.compare_faces(VideoCamera.encodelistknown,encodeface)
+            facedis=face_recognition.face_distance(VideoCamera.encodelistknown,encodeface)
             matchindex=np.argmin(facedis)
-
             if matches[matchindex]:
                 matched=True
                 name = self.names[matchindex].lower()
@@ -102,7 +64,7 @@ class VideoCamera(object):
                 y1,x2,y2,x1= y1*4,x2*4,y2*4,x1*4
                 cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
                 cv2.rectangle(img,(x1,y2-35),(x2,y2),(0,255,0),cv2.FILLED)
-                cv2.putText(img,str(username),(x1+6,y2-6),cv2.FONT_HERSHEY_COMPLEX_SMALL,1,(255,255,255),2)
+                cv2.putText(img,str(username),(x1+6,y2-6),cv2.FONT_HERSHEY_COMPLEX_SMALL,1,(0,0,0),1)
                 if(VideoCamera.teacherlogged):
                     if name not in self.attendees:
                         self.attendees.append(name)

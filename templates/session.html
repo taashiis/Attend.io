@@ -1,26 +1,61 @@
-{% extends 'base.html' %} {% load template_filters %} {%block body%}
+{% extends 'base.html' %}{% load template_filters %}{%block body%}
+<div
+  id="sidebar"
+  class="floatchild flex-column flex-shrink-0 p-3 bg-dark"
+  style="width: 280px"
+>
+  <div class="btndiv">Session Logs</div>
+  <hr />
+  <ul class="nav nav-pills btndiv mb-auto">
+    {% for s in dates %}
+    <li>
+      <div
+        id="{{s}}"
+        onclick="getdate(this.id)"
+        class="nav-link link-dark btndiv"
+      >
+        {{s}}
+      </div>
+    </li>
+    {%endfor %}
+  </ul>
+</div>
 
+<div id="alist" class="floatchild">
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Unique ID</th>
+        <th scope="col">Attendee name</th>
+        <th scope="col">Entry Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for stu in present %}
+      <tr>
+        <th scope="row">{{stu.empid}}</th>
+        <td>{{ users|get_item:stu.empid }}</td>
+        <td>{{stu.entrytime}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="btndiv">
+    {% if not present %}
+    <img src="static/images/getlist.png" id="seshimg" class="images" />
+    {% endif %}
+  </div>
+</div>
 <form action="/session" method="POST" id="getlist">
   {% csrf_token %}
-  <input type="text" id="inputdate" name="inputdate" value="" />
-  {% for s in dates %}
-  <button type="button" class="menu" id="{{s}}" onclick="getdate(this.id)">
-    {{s}}
-  </button>
-  {%endfor %}
+  <input id="inputdate" name="inputdate" value="" type="hidden" />
 </form>
-<div id="alist">
-  {{present}} {% for stu in present %}
-  <p>{{stu.empid}} {{stu.entrytime}}</p>
-  {% if stu.empid in users %}
-  <p>{{ users|get_item:stu.empid }}</p>
-  {% endif %} {% endfor %}
-</div>
 {% endblock body %} {% block script %}
 <script type="text/javascript">
   function getdate(date) {
     var seshdate = document.getElementById("inputdate");
     seshdate.value = date;
+    document.getElementById("alist").insertAdjacentHTML("afterbegin", "");
     var sform = document.getElementById("getlist");
     sform.submit();
   }

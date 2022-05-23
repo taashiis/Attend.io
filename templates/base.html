@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,6 +6,7 @@
       type="text/javascript"
       src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"
     ></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -15,20 +17,39 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href={% static "index.css"%} />
   </head>
   <body>
     <div
       class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow"
     >
-      <h5 class="my-0 mr-md-auto font-weight-normal">{{company}}</h5>
+      <div class="my-0 mr-md-auto font-weight-normal">
+        <lottie-player
+          src="https://assets7.lottiefiles.com/packages/lf20_dklj3jrl.json"
+          background="transparent"
+          speed="1"
+          id="anilogo"
+          style="width: 40px; height: 40px"
+          loop
+          autoplay
+        ></lottie-player>
+        <div id="logo">
+          <a href="/" style="text-decoration: none; color: rgb(52, 156, 253)">
+            Attend.io</a
+          >
+        </div>
+      </div>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="#">Features</a>
-        <a class="p-2 text-dark" href="#">Enterprise</a>
-        <a class="p-2 text-dark" href="#">Support</a>
-        <a class="p-2 text-dark" href="#">Pricing</a>
+        <a class="btn btn-outline-primary" href="/user">Conduct a Session</a>
+        <a class="btn btn-outline-primary" href="/session">Logs</a>
+        <a class="btn btn-outline-primary" href="/logout">Logout</a>
       </nav>
-      <a class="btn btn-outline-primary" href="/login">Sign up</a>
     </div>
     {% block body %}{% endblock body %}
 
