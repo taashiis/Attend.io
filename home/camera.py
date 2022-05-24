@@ -40,8 +40,9 @@ class VideoCamera(object):
         seshs=Session.objects.all()
         seshset=set([])
         for s in seshs:
-            seshset.add(s.sno)
-        print(len(seshset))
+            if s.host==user:
+                seshset.add(s.sno)
+        # print(seshset)
         VideoCamera.count=len(seshset)+1
         print(VideoCamera.count)
         for cls in VideoCamera.attendees:
@@ -49,8 +50,8 @@ class VideoCamera(object):
                 attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid=cls,entrytime=datetime.now())
                 attendee.save()
         if len(VideoCamera.attendees)==1 and VideoCamera.attendees[0]==user:
-            print("hi")
-            print(VideoCamera.count)
+            # print("hi")
+            # print(VideoCamera.count)
             attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid="")
             attendee.save()
         VideoCamera.attendees.clear()

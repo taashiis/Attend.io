@@ -75,6 +75,7 @@ body {
 #sidebar {
   height: 100vh;
   float: left;
+  /* text-align: center; */
   /* border: solid black 1px; */
 }
 #anilogo {
@@ -108,4 +109,15 @@ a:hover {
   padding-left: 20px;
   padding-right: 20px;
   border-radius: 30px;
+}
+
+footer {
+  padding-top: 20px;
+}
+.whitetxt {
+  justify-content: center;
+  color: white;
+  margin: auto;
+  /* border: 1px solid white; */
+  width: 100%;
 }

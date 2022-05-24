@@ -4,21 +4,23 @@
   class="floatchild flex-column flex-shrink-0 p-3 bg-dark"
   style="width: 280px"
 >
-  <div class="btndiv">Session Logs</div>
+  <div class="btndiv whitetxt">Session Logs</div>
   <hr />
-  <ul class="nav nav-pills btndiv mb-auto">
-    {% for s in dates %}
-    <li>
-      <div
-        id="{{s}}"
-        onclick="getdate(this.id)"
-        class="nav-link link-dark btndiv"
-      >
-        {{s}}
-      </div>
-    </li>
-    {%endfor %}
-  </ul>
+  <div class="btndiv whitetxt">
+    <ul class="nav nav-pills btndiv mb-auto whitetxt">
+      {% for s in dates %}
+      <li>
+        <div
+          id="{{s}}"
+          onclick="getdate(this.id)"
+          class="nav-link link-dark btndiv whitetxt"
+        >
+          {{s}}
+        </div>
+      </li>
+      {%endfor %}
+    </ul>
+  </div>
 </div>
 <div id="accordion">
   {% for s,value in sessions.items %}
