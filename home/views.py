@@ -55,12 +55,12 @@ def register(request):
     return render(request,'register.html')
 
 def login(request):
+    obj = VideoCamera()
     if request.method == "POST":
         id = request.POST.get('empid')
-        name=identifyuser(VideoCamera())
+        name=identifyuser(obj)
         passw=request.POST.get('emppass')
         email=request.POST.get('email')
-        usern=request.POST.get('name')
         data=Login.objects.get(empid=id)
         if(id==name)and(passw==data.emppass)and(email==data.empemail):
             global username 
@@ -115,13 +115,24 @@ def session(request,user=""):
         sdate=request.POST.get('inputdate')
         presentstu=[]
         studentnames={}
+        sessions={}
         for cls in session:
             if cls.date.strftime("%b %d, %Y") == sdate and cls.host==user:
-                print("")
+                if cls.sno not in sessions.keys():
+                    if(cls.empid==""):
+                        sessions[cls.sno]=0
+                    else:
+                        sessions[cls.sno]=1
+                else:
+                    if (cls.empid != ""):
+                        sessions[cls.sno]+=1
+                if cls.empid == "":
+                    studentnames[""]=""
+                else:
+                    studentnames[cls.empid]=Login.objects.get(empid=cls.empid).empname
                 presentstu.append(cls)
-                studentnames[cls.empid]=Login.objects.get(empid=cls.empid).empname
-        return render(request,'session.html', {"username":Login.objects.get(empid=user).empname,"dates":allsesh,"present":presentstu,"users":studentnames})
-    return render(request,'session.html', {"username":Login.objects.get(empid=user).empname,"dates":allsesh,"present":emptylist,"users":emptylist})
+        return render(request,'session.html', {"username":Login.objects.get(empid=user).empname,"dates":allsesh,"present":presentstu,"users":studentnames,"sessions":sessions})
+    return render(request,'session.html', {"username":Login.objects.get(empid=user).empname,"dates":allsesh,"present":emptylist,"users":emptylist,":session":emptylist})
 
 def logout(request):
     global tloggedin

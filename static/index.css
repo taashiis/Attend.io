@@ -1,5 +1,6 @@
 body {
-  color: rgb(52, 156, 253);
+  /* background-image: url("images/waves.jpg"); */
+  color: #349cfd;
   font-family: "Nunito", sans-serif;
   font-size: 18px;
 }
@@ -28,7 +29,7 @@ body {
   margin: 30px auto;
   /* background: rgb(156, 216, 255); */
   border-radius: 20px;
-  border: 4px solid rgb(156, 216, 255);
+  border: 4px solid #9ed8ff;
 }
 .btndiv {
   /* margin-left: 0; */
@@ -86,4 +87,25 @@ a {
 }
 a:hover {
   text-decoration: none;
+}
+#rec {
+  display: inline-block;
+}
+#host {
+  display: inline-block;
+}
+#reclogo {
+  margin-right: 30px;
+  transform: translateY(2rem);
+  display: inline-block;
+}
+#frontext {
+  transform: translateY(-8rem);
+}
+#recblock {
+  width: fit-content;
+  margin: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 30px;
 }

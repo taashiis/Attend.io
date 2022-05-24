@@ -1,9 +1,12 @@
 
 {% extends 'base.html' %}  {% load static %}{%block body%}
   <body>
+    <div id="recblock">
     <div class="jumbo" >
+      <div id="rec"></div>
       <div class="banner" id="host">Welcome Back, {{username}} !</div>
     </div>
+    <br>
     <div id="start" class="jumbo"><img src={% static "images/sessionpic.jpg"%} height="400" /><br>
       <div class="banner btndiv">Start a Session ?</div>
     </div>
@@ -15,7 +18,7 @@
       </div>
     </form>
     </div>
-    
+    </div>
   </body>
   {%endblock body%} {%block script%}
   <script type="text/javascript">
@@ -33,10 +36,13 @@
       start.innerHTML = "<img src='' id='imagefeed' height='450' width='750' id='loginvid'/>";
       var sesh = document.getElementById("imagefeed");
       sesh.src = "{% url 'video_feed' %}";
-      var host=document.getElementById("host")
-      host.innerHTML = "Host name : {{username}}"
+      var host=document.getElementById("host");
+      host.innerHTML = 'Host name : {{username}}';
+      var rec = document.getElementById("rec");
+      rec.innerHTML = '<lottie-player id="reclogo" src="https://assets4.lottiefiles.com/packages/lf20_pldkyyxt.json"  background="transparent"  speed="1"  style="width: 80px; height: 80px;"  loop  autoplay> </lottie-player>';
       const  div = document.getElementById('buttonsesh');
       div.innerHTML='<button type="submit" id="end" class="btn btn-outline-danger">End</button>';
+      document.getElementById("recblock").style.border = "thick solid #9ed8ff";
     }
   </script>
   {%endblock script%} {% comment %}

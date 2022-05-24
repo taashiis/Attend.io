@@ -19,6 +19,7 @@ class VideoCamera(object):
     encodelistknown=[]
     def __init__(self):
         self.video=cv2.VideoCapture(0)
+        VideoCamera.list=os.listdir(VideoCamera.path)
         for cls in VideoCamera.list:
             curr=cv2.imread(f'{VideoCamera.path}/{cls}')
             if os.path.splitext(cls)[0] not in VideoCamera.names:
@@ -36,13 +37,25 @@ class VideoCamera(object):
     matched=False
     count=0
     def saveattendance(user):
-        VideoCamera.count+=1
+        seshs=Session.objects.all()
+        seshset=set([])
+        for s in seshs:
+            seshset.add(s.sno)
+        print(len(seshset))
+        VideoCamera.count=len(seshset)+1
+        print(VideoCamera.count)
         for cls in VideoCamera.attendees:
             if cls!=user:
                 attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid=cls,entrytime=datetime.now())
                 attendee.save()
+        if len(VideoCamera.attendees)==1 and VideoCamera.attendees[0]==user:
+            print("hi")
+            print(VideoCamera.count)
+            attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid="")
+            attendee.save()
         VideoCamera.attendees.clear()
     def get_frame(self):
+        # print(VideoCamera.encodelistknown)
         name=''
         matched=False
         success, img = self.video.read()

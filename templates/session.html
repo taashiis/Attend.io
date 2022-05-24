@@ -20,26 +20,62 @@
     {%endfor %}
   </ul>
 </div>
+<div id="accordion">
+  {% for s,value in sessions.items %}
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <div class="mb-0">
+        <button
+          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+          data-toggle="collapse"
+          data-target="#{{s}}"
+          aria-expanded="false"
+          aria-controls="collapseOne"
+        >
+          Session No . {{s}}
+          <span class="badge badge-primary badge-pill">{{value}}</span>
+        </button>
+      </div>
+    </div>
 
+    <div
+      id="{{s}}"
+      class="collapse"
+      aria-labelledby="headingOne"
+      data-parent="#accordion"
+    >
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Unique ID</th>
+              <th scope="col">Attendee name</th>
+              <th scope="col">Entry Time</th>
+            </tr>
+          </thead>
+          {% for stu in present %} {% if stu.sno == s %}
+          <tbody>
+            {% if stu.empid == "" %}
+            <tr>
+              <td colspan="3">No attendees</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td>{{stu.empid}}</td>
+              <td>{{users|get_item:stu.empid }}</td>
+              <td>{{stu.entrytime}}</td>
+            </tr>
+            {% endif %}
+          </tbody>
+
+          {% endif %} {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 <div id="alist" class="floatchild">
-  <table class="table table-bordered">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Unique ID</th>
-        <th scope="col">Attendee name</th>
-        <th scope="col">Entry Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for stu in present %}
-      <tr>
-        <th scope="row">{{stu.empid}}</th>
-        <td>{{ users|get_item:stu.empid }}</td>
-        <td>{{stu.entrytime}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
   <div class="btndiv">
     {% if not present %}
     <img src="static/images/getlist.png" id="seshimg" class="images" />
