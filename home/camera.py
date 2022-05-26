@@ -15,7 +15,7 @@ class VideoCamera(object):
     list=os.listdir(path)
     name=''
     teacherlogged=False
-    attendees=[]
+    attendees={}
     encodelistknown=[]
     def __init__(self):
         self.video=cv2.VideoCapture(0)
