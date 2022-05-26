@@ -47,7 +47,7 @@ class VideoCamera(object):
         print(VideoCamera.count)
         for cls in VideoCamera.attendees:
             if cls!=user:
-                attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid=cls,entrytime=datetime.now())
+                attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid=cls,entrytime=VideoCamera.attendees[cls])
                 attendee.save()
         if len(VideoCamera.attendees)==1 and VideoCamera.attendees[0]==user:
             # print("hi")
@@ -80,8 +80,8 @@ class VideoCamera(object):
                 cv2.rectangle(img,(x1,y2-35),(x2,y2),(0,255,0),cv2.FILLED)
                 cv2.putText(img,str(username),(x1+6,y2-6),cv2.FONT_HERSHEY_COMPLEX_SMALL,1,(0,0,0),1)
                 if(VideoCamera.teacherlogged):
-                    if name not in self.attendees:
-                        self.attendees.append(name)
+                    if name not in self.attendees.keys():
+                        self.attendees[name]=datetime.now()
                 #     self.saveattendance(name)
             # cv2.imshow('webcam',img)
             # cv2.waitKey(1)
