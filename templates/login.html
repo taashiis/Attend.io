@@ -112,33 +112,5 @@
         <h5>Attend.io</h5>
       </div>
     </footer>
-    {% comment %} <video autoplay="true" id="videoElement"></video> {%
-    endcomment %} {%comment %}
-    <div class="video-outer">
-      <video id="cam_input" height="480" width="640"></video>
-      <canvas id="canvas_output"></canvas> {% endcomment %}{% comment %}
-    </div>
-    {% endcomment %} {% comment %}
-    <div class="container">
-      <div id="my_camera"></div>
-    </div>
-    <div id="resutls"></div>
-    <button type="button" onclick="savesnap();">save</button> {% endcomment %}
   </body>
-  {% comment %}
-  <script type="text/javascript">
-    var video = document.querySelector("#videoElement");
-
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then(function (stream) {
-          video.srcObject = stream;
-        })
-        .catch(function (err0r) {
-          console.log("Something went wrong!");
-        });
-    }
-  </script>
-  {% endcomment %}
 </html>

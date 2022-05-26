@@ -1,15 +1,20 @@
-
-{% extends 'base.html' %}  {% load static %}{%block body%}
+{% extends 'base.html' %} {% load static %}{%block body%}
 <body>
-  <div id="start" class="jumbo"><lottie-player src="https://assets3.lottiefiles.com/packages/lf20_1oky66dx.json"  background="transparent"  speed="1"  style="width: 400px; height: 400px;"  loop  autoplay></lottie-player><br>
-    <div class="banner btndiv">Session Saved</div><br><br>
-    <p class="btndiv"> <a href="/user" >start another session?</a> </p>
+  <div id="start" class="jumbo">
+    <lottie-player
+      src="https://assets3.lottiefiles.com/packages/lf20_1oky66dx.json"
+      background="transparent"
+      speed="1"
+      style="width: 400px; height: 400px"
+      loop
+      autoplay
+    ></lottie-player
+    ><br />
+    <div class="banner btndiv">Session Saved</div>
+    <br /><br />
+    <p class="btndiv"><a href="/user">start another session?</a></p>
   </div>
 </body>
 {%endblock body%} {%block script%}
-<script type="text/javascript">
-  //myform.onsubmit =
-</script>
-{%endblock script%} {% comment %}
-</html>
-{% endcomment %}
+<script type="text/javascript"></script>
+{%endblock script%}

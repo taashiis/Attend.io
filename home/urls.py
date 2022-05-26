@@ -12,6 +12,5 @@ urlpatterns = [
     path("user", views.user, name='user'),
     path("session", views.session, name='session'),
     path("logout", views.logout, name='logout'),
-    path("sessionend", views.sessionend, name='sessionend'),
-    # path("user", views.usersuc, name='user')
+    path("sessionend", views.sessionend, name='sessionend')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

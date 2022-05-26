@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+
+# model to store all the users registered on the site
 class Login(models.Model):
     empid = models.CharField(max_length=10)
     empname = models.CharField(max_length=122)
@@ -11,6 +13,8 @@ class Login(models.Model):
     def __str__(self):
         return self.empname
 
+
+# model to store all the users that got recognised by the system in a session
 class Session(models.Model):
     sno=models.CharField(max_length=10,default='0')
     host=models.CharField(max_length=10,default='0')

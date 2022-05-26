@@ -7,7 +7,6 @@ from home.models import Login, Session
 from datetime import datetime
 
 
-
 class VideoCamera(object):
     path='media'
     images=[]
@@ -17,6 +16,9 @@ class VideoCamera(object):
     teacherlogged=False
     attendees={}
     encodelistknown=[]
+
+    # constructor which reads the images that have been registered in media folder and 
+    # loads it to memory for recognition
     def __init__(self):
         self.video=cv2.VideoCapture(0)
         VideoCamera.list=os.listdir(VideoCamera.path)
@@ -29,6 +31,8 @@ class VideoCamera(object):
 
     def __del__(self):
         self.video.release()
+
+    # find face encoding of all the photos recognised and store those values to a list to compare
     def findencoding(img):
         img=cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
         encode=face_recognition.face_encodings(img)[0]
@@ -36,13 +40,14 @@ class VideoCamera(object):
     print("encoding done")
     matched=False
     count=0
+
+    # saves the attendance of all the attendees that were present in a session to the database.
     def saveattendance(user):
         seshs=Session.objects.all()
         seshset=set([])
         for s in seshs:
-            if s.host==user:
+            if s.host==user and s.date==datetime.today().date():
                 seshset.add(s.sno)
-        # print(seshset)
         VideoCamera.count=len(seshset)+1
         print(VideoCamera.count)
         for cls in VideoCamera.attendees:
@@ -50,13 +55,13 @@ class VideoCamera(object):
                 attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid=cls,entrytime=VideoCamera.attendees[cls])
                 attendee.save()
         if len(VideoCamera.attendees)==1 and VideoCamera.attendees[0]==user:
-            # print("hi")
-            # print(VideoCamera.count)
             attendee= Session(sno=VideoCamera.count,host=user,date=datetime.today(),empid="")
             attendee.save()
         VideoCamera.attendees.clear()
+
+    # gets image of user frame by frame and sends processed video after recognition as a continous
+    # stream of images - video.
     def get_frame(self):
-        # print(VideoCamera.encodelistknown)
         name=''
         matched=False
         success, img = self.video.read()
@@ -73,7 +78,6 @@ class VideoCamera(object):
                 matched=True
                 name = self.names[matchindex].lower()
                 username=Login.objects.get(empid=name)
-                # print(self.name)
                 y1,x2,y2,x1= faceloc
                 y1,x2,y2,x1= y1*4,x2*4,y2*4,x1*4
                 cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
@@ -82,11 +86,6 @@ class VideoCamera(object):
                 if(VideoCamera.teacherlogged):
                     if name not in self.attendees.keys():
                         self.attendees[name]=datetime.now()
-                #     self.saveattendance(name)
-            # cv2.imshow('webcam',img)
-            # cv2.waitKey(1)
-        # self,image=self.video.read()
-        # frame_flip=cv2.flip(img,1)
         ret,jpeg=cv2.imencode('.jpg',img)
         return jpeg.tobytes(),matched,name
 
