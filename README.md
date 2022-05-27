@@ -22,10 +22,11 @@ as database to store data.
 https://youtu.be/tbvOatUv92E
 
 ## Preview 
-<img width="1440" alt="Screenshot 2022-05-27 at 9 41 29 PM" src="https://user-images.githubusercontent.com/75372704/170737879-95e0f625-6559-44ba-ab9f-2f95828933bc.png">
-  
-    
+
 <img width="1426" alt="Screenshot 2022-05-26 at 2 27 15 PM" src="https://user-images.githubusercontent.com/75372704/170737401-0dde505f-78b1-412a-9008-d250d99c1fda.png">
+  
+  
+<img width="1440" alt="Screenshot 2022-05-27 at 9 41 29 PM" src="https://user-images.githubusercontent.com/75372704/170737879-95e0f625-6559-44ba-ab9f-2f95828933bc.png">
 
 ## Run Locally
 
