@@ -30,6 +30,8 @@ https://youtu.be/tbvOatUv92E
 
 ## Run Locally
 
+Make sure your system is connected to the internet while running the webapp, otherwise the animations might not be visible.
+
 Clone the project
 
 ```bash
