@@ -31,8 +31,10 @@ https://youtu.be/tbvOatUv92E
 ## Run Locally
 
 Make sure your system is connected to the internet while running the webapp, otherwise the animations might not be visible.
-The repo already contains my login photo as dummy data for recognition. 
-the username and password for django backend is - admin
+
+  The repo already contains my login photo as dummy data for recognition. 
+
+  The username and password for django backend is - admin
 
 Clone the project
 
